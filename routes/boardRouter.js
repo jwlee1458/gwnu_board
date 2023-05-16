@@ -1,13 +1,23 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const connection = require('../db/connection');
 
 const posts = [];
 
 // main_board
-router.get('/', (req, res) => {
-    res.render('boards/main_board', { posts: posts });
-});
+router.get('/', function(req, res) {
+    connection.query("SELECT *, DATE_FORMAT(date, '%Y-%m-%d') AS formattedDate FROM article WHERE board = 'main' ORDER BY idx DESC", function(err, results) {
+      if (err) {
+        console.error('쿼리 오류:', err);
+        return res.status(500).send('서버 오류');
+      }
+      results.forEach(post => {
+        const formattedDate = post.formattedDate;
+      });
+      res.render('boards/main_board', { posts: results });
+    });
+  });
 
 // write
 router.get('/write', (req, res) => {

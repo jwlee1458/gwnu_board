@@ -5,25 +5,12 @@ const app = express();
 const router = express.Router();
 const http = require('http');
 const path = require('path');
-const mysql = require('mysql');
 const ejs = require('ejs');
+const connection = require('./db/connection');
 
 const HTTP_PORT = 8080;
 
 const boardRouter = require('./routes/boardRouter');
-
-const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
-    port: process.env.DB_PORT
-});
-
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log('DB 연결');
-});
 
 let options = {
     extensions: ['ejs'],

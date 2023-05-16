@@ -1,7 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const bodyParser = require('body-parser');
 const connection = require('../db/connection');
+
+router.use(bodyParser.urlencoded({ extended: true }));
 
 const posts = [];
 
@@ -53,7 +56,45 @@ router.get('/delete', (req, res) => {
 
 // search_result
 router.get('/search_result', (req, res) => {
-    res.render('boards/search_result', {posts: posts});
+  res.render('boards/search_result', { posts: [] });
+});
+
+router.post('/search_result', (req, res) => {
+  const category = req.body.category;
+  const search = req.body.search;
+  let query = "SELECT idx, title, email, DATE_FORMAT(date, '%Y-%m-%d') AS formattedDate, hit, likes FROM article";
+  const conditions = [];
+
+  if (category === 'all') {
+    // 모든 카테고리에서 검색
+    conditions.push(`title LIKE '%${search}%' OR content LIKE '%${search}%'`);
+  } else if (category === 'main' || category === 'secret' || category === 'test') {
+    // 특정 카테고리에서 검색
+    conditions.push(`board = '${category}' AND (title LIKE '%${search}%' OR content LIKE '%${search}%')`);
+  } else if (category === 'Title') {
+    // 제목에서 검색
+    conditions.push(`title LIKE '%${search}%'`);
+  } else if (category === 'Content') {
+    // 내용에서 검색
+    conditions.push(`content LIKE '%${search}%'`);
+  } else {
+    return res.status(400).send('Invalid input.'); // 유효하지 않은 입력일 경우
+  }
+
+  // 쿼리 조건이 존재할 경우 WHERE 절 추가
+  if (conditions.length > 0) {
+    const whereClause = conditions.join(' OR ');
+    query += ` WHERE ${whereClause}`;
+  }
+
+  // 쿼리 실행 및 결과 가져오기
+  connection.query(query, function(err, results) {
+    if (err) {
+      console.error('쿼리 오류:', err);
+      return res.status(500).send('서버 오류');
+    }
+    res.render('boards/search_result', { results: results });
+  });
 });
 
 module.exports = router;

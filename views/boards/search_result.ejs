@@ -250,7 +250,7 @@
                 <h2>Search Result</h2>
                 <a class="btn btn-primary" style="float:right;" href="/main_board/write" role="button">Write</a>
 
-                <form class="w-100 me-3" role="search" action="search_result.php" method="POST">
+                <form class="w-100 me-3" role="search" action="search_result" method="POST">
                     <div class="input-group mb-3" style="width: 100%;">
                         <select name="category" class="form-select">
                             <option value="all">All</option>
@@ -276,47 +276,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-              #search section
-              if(isset($_POST['category']) && isset($_POST['search'])){
-                $category = $_POST['category'];
-                $search = $_POST['search'];
-                $board_list = array('main', 'secret', 'test');
-                if(in_array($category, $board_list) ){
-                  $column = 'board = \''.$category.'\' AND title ';
-                }
-                else if($category == 'Title'){
-                  $column = 'title';
-                }
-                else if($category == 'Content'){
-                  $column = 'content';
-                }
-                else{
-                  echo "<script>alert('Invalid input.');history.back();</script>";
-                }
-              }
-              
-  
-              # table section
-            
-              echo "<script>function click(s){location.href='read?s';}</script>";
-              $select = "SELECT * FROM article WHERE $column = '$search'  ORDER BY idx DESC";
-              $result = mysqli_query($conn, $select) or die("!!!!!!!!!!!!!!!");
-              while($row = mysqli_fetch_array($result)){
-                $idx = $row['idx'];
-                echo "<tr>";
-                echo "<td><a href='read.php?idx=" . $row['idx'] ." '>" . $row['idx'] . "</a></td>";
-                echo "<td><a href='read.php?idx=" . $row['idx'] ." '>" . $row['title'] . "</a></td>";
-                echo "<td><a href='read.php?idx=" . $row['idx'] ." '>" . $row['email'] . "</a></td>";
-                echo "<td><a href='read.php?idx=" . $row['idx'] ." '>" . $row['date'] . "</a></td>";
-                echo "<td><a href='read.php?idx=" . $row['idx'] ." '>" . $row['hit'] . "</a></td>";
-                echo "<td><a href='read.php?idx=" . $row['idx'] ." '>" . $row['likes'] . "</a></td>";
-                echo "</tr>";
-  
-              }
-              ?>
-
-                        </tbody>
+                            <% results.forEach(function(post) { %>
+                              <tr>
+                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.idx %></a></td>
+                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.title %></a></td>
+                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.email %></a></td>
+                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.formattedDate %></a></td>
+                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.hit %></a></td>
+                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.likes %></a></td>
+                              </tr>
+                            <% }) %>
+                          </tbody>
+                        </table>
                     </table>
                 </div>
                 <script src="../bootstrap.bundle.min.js"></script>

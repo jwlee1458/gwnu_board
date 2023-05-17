@@ -130,7 +130,23 @@ router.post('/modify', upload.none(), (req, res) => {
 
 // delete
 router.get('/delete', (req, res) => {
-    res.render('boards/delete', {posts: posts});
+  const postId = req.query.idx;
+  const query = 'DELETE FROM article WHERE idx = ?';
+  connection.query(query, [postId], (err, result) => {
+    if (err) {
+      console.error('DB 삭제 오류:', err);
+      res.status(500).send('DB 삭제 오류');
+    } else {
+      console.log('DB 삭제 성공');
+      const popupMessage = '게시물이 성공적으로 삭제되었습니다!';
+      res.send(`
+        <script>
+          alert("${popupMessage}");
+          window.location.href = "/main_board";
+        </script>
+      `);
+    }
+  });
 });
 
 // search_result

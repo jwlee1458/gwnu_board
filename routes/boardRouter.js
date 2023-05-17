@@ -1,9 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const bodyParser = require('body-parser');
 const multer = require('multer');
 const connection = require('../db/connection');
 const upload = multer();
+
+router.use(bodyParser.urlencoded({ extended: true }));
 
 const posts = [];
 
@@ -46,18 +49,6 @@ router.post('/write', upload.none(), (req, res) => {
       `);
     }
   });
-});
-
-// secret_board
-router.get('/secret_board', (req, res) => {
-    const secretPosts = [];
-    res.render('boards/secret_board', { secretPosts });
-});
-
-// test_board
-router.get('/test_board', (req, res) => {
-    const testPosts = [];
-    res.render('boards/test_board', { testPosts });
 });
 
 // read
@@ -163,9 +154,6 @@ router.post('/search_result', (req, res) => {
   if (category === 'all') {
     // 모든 카테고리에서 검색
     conditions.push(`title LIKE '%${search}%' OR content LIKE '%${search}%'`);
-  } else if (category === 'main' || category === 'secret' || category === 'test') {
-    // 특정 카테고리에서 검색
-    conditions.push(`board = '${category}' AND (title LIKE '%${search}%' OR content LIKE '%${search}%')`);
   } else if (category === 'Title') {
     // 제목에서 검색
     conditions.push(`title LIKE '%${search}%'`);

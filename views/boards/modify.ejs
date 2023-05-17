@@ -236,19 +236,7 @@
 
                 </div>
             </nav>
-            <?php
-          if(isset($_GET['idx'])){
-              $idx = $_GET['idx'];
-          }
-  
-          if($_SERVER['HTTP_REFERER'] != 'http://127.0.0.1:8080/Create_WEB/board/read.php?idx='.$idx){
-              echo '<script>alert("Wrong approach.");history.back();</script>';
-          }
-  
-          $select_query = "SELECT * FROM article WHERE idx = $idx";
-          $result = mysqli_query($conn, $select_query);
-          $row = mysqli_fetch_assoc($result);
-      ?>
+
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="chartjs-size-monitor">
                     <div class="chartjs-size-monitor-expand"></div>
@@ -258,11 +246,11 @@
                 </div>
                 <br>
                 <h1>Modify Article</h1>
-                <form action="write.php" method="POST" enctype="multipart/form-data">
+                <form action="/main_board/modify?idx=<%= post.idx %>" method="POST" enctype="multipart/form-data">
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default" style="height:48px;">TITLE</span>
-                        <input type="text" name="title" value="<?php echo $row['title']?>" required class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        <input type="text" name="title" value="<%= post.title %>" required class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                     </div>
 
                     <div class="input-group mb-3">
@@ -279,11 +267,11 @@
 
                     <div class="input-group input-group-sm mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
-                        <input type="password" name="password" value="<?php echo $row['password']?>" class="form-control" placeholder="not required" minlength="4" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <input type="password" name="password" value="<%= post.article_pw %>" class="form-control" placeholder="not required" minlength="4" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="form-floating">
-                        <textarea class="form-control" name="content" style="height:60%;" required placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"><?php echo $row['content']?></textarea>
+                        <textarea class="form-control" name="content" style="height:60%;" required placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"><%= post.content %></textarea>
                         <label for="floatingTextarea2">Content</label>
                     </div>
                     <div class="input-group mb-3">

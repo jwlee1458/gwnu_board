@@ -306,11 +306,11 @@
                 <div class="post">
                   <div class="post-header">
                     <img src="../image/logo.png" alt="Profile Picture">
-                    <h2><%- row.title %></h2>
+                    <h2><%- post.title %></h2>
                   </div>
                   <p class="blog-post-meta" style="text-align:left;">
                     <%= date %> by <%= email %>
-                    <a style="float: right;"><%- row.hit %></a>
+                    <a style="float: right;"><%- post.hit %></a>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="display:inline-block; float: right; margin-top:1%;">
                       <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path>
                       <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
@@ -318,8 +318,8 @@
                   </p>
                   <hr>
                   <div class="post-body">
-                    <p style="text-align:left;"><%- row.content %></p>
-                    <p style="text-align:right;"><a style="text-align:right;" href="<%= row.file %>" download>Download File</a></p>
+                    <p style="text-align:left;"><%- post.content %></p>
+                    <p style="text-align:right;"><a style="text-align:right;" href="<%= post.file %>" download>Download File</a></p>
                   </div>
                   <hr>
                 </div>
@@ -368,15 +368,14 @@
     </div>
     <hr>
 
-    <?php
-        
-        if($email == $_SESSION['email']){
-          echo '<div style="text-align:right;">';
-          echo '<a href="modify.php?idx='.$idx.'" class="btn btn-primary btn-lg active" role="button" style="font-size:15px;" aria-pressed="true">Modify</a> ';
-          echo '<a href="delete.php?idx='.$idx.'" class="btn btn-secondary btn-lg active" role="button" style="font-size:15px;" aria-pressed="true">Delete</a><br><br><br>';
-          echo '</div>';
-        }
-        ?>
+    <% if (email === 'test@test.com') { %>
+        <div style="text-align: right;">
+          <a href="/main_board/modify?idx=<%= idx %>" class="btn btn-primary btn-lg active" role="button" style="font-size: 15px;" aria-pressed="true">Modify</a>
+          <a href="/main_board/delete?idx=<%= idx %>" class="btn btn-secondary btn-lg active" role="button" style="font-size: 15px;" aria-pressed="true">Delete</a>
+          <br><br><br>
+        </div>
+      <% } %>      
+      
     <!-- The comments section -->
     <div class="comments">
         <h3 style="text-align:left;">Comments</h3><br>

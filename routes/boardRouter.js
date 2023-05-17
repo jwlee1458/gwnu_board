@@ -82,13 +82,50 @@ router.get('/read', (req, res) => {
     const date = new Date(row.date);
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const formattedDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
-    res.render('boards/read', { row: row, email: email, title: title, content: content, date: formattedDate, file: file });
+    res.render('boards/read', { idx: idx, post: row, email: email, title: title, content: content, date: formattedDate, file: file });
   });
 });
 
 // modify
 router.get('/modify', (req, res) => {
-    res.render('boards/modify', {posts: posts});
+  const postId = req.query.idx;
+  const query = 'SELECT * FROM article WHERE idx = ?';
+  connection.query(query, [postId], (err, results) => {
+    if (err) {
+      console.error('DB 조회 오류:', err);
+      res.status(500).send('DB 조회 오류');
+    } else {
+      if (results.length > 0) {
+        const post = results[0];
+        res.render('boards/modify', { post: post });
+      } else {
+        res.status(404).send('게시물을 찾을 수 없습니다.');
+      }
+    }
+  });
+});
+
+router.post('/modify', upload.none(), (req, res) => {
+  const postId = req.query.idx;
+  const { title, board, article_pw, content, file } = req.body;
+  const email = 'test@test.com'; // 임시 사용자 이메일 설정
+  const query = 'UPDATE article SET title = ?, board = ?, article_pw = ?, content = ?, file = ? WHERE idx = ?';
+  const values = [title, board, article_pw, content, file, postId];
+  connection.query(query, values, (err, result) => {
+    if (err) {
+      console.error('DB 수정 오류:', err);
+      res.status(500).send('DB 수정 오류');
+    } else {
+      console.log('DB 수정 성공');
+      const popupMessage = '게시물이 성공적으로 수정되었습니다!';
+      res.send(`
+        <script>
+          alert("${popupMessage}");
+          window.location.href = "/main_board";
+        </script>
+      `);
+    }
+  });
 });
 
 // delete

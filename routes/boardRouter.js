@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const bodyParser = require('body-parser');
+const multer = require('multer');
 const connection = require('../db/connection');
-
-router.use(bodyParser.urlencoded({ extended: true }));
+const upload = multer();
 
 const posts = [];
 
@@ -25,6 +24,28 @@ router.get('/', function(req, res) {
 // write
 router.get('/write', (req, res) => {
     res.render('boards/write', { posts: posts });
+});
+
+router.post('/write', upload.none(), (req, res) => {
+  const { title, board, article_pw, content, file } = req.body;
+  const currentDate = new Date().toISOString().split('T')[0]; // 현재 날짜
+  const email = 'test@test.com'; // 임시 사용자 이메일 설정
+  const query = `INSERT INTO article (board, title, content, article_pw, date, email) VALUES (?, ?, ?, ?, ?, ?)`;
+  connection.query(query, [board, title, content, article_pw, currentDate, email], (err, result) => {
+    if (err) {
+      console.error('DB 삽입 오류:', err);
+      res.status(500).send('DB 삽입 오류');
+    } else {
+      console.log('DB 삽입 성공');
+      const popupMessage = '게시물이 성공적으로 작성되었습니다!';
+      res.send(`
+        <script>
+          alert("${popupMessage}");
+          window.location.href = "/main_board";
+        </script>
+      `);
+    }
+  });
 });
 
 // secret_board

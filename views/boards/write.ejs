@@ -246,32 +246,31 @@
                 </div>
                 <br>
                 <h1>Write Article</h1>
-                <form action="write" method="POST" enctype="multipart/form-data">
-
+                <form action="/main_board/write" method="POST" enctype="multipart/form-data">
+            
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default" style="height:48px;">TITLE</span>
                         <input type="text" name="title" required class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                     </div>
-
+            
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <label class="input-group-text" for="inputGroupSelect01">Board</label>
                         </div>
                         <select class="custom-select" name="board" style="width:85%;" id="inputGroupSelect01">
-                            <option selected>Choose</option>
                             <option value="main">Main Board</option>
                             <option value="secret">Secret Board</option>
                             <option value="test">Test Board</option>
                         </select>
                     </div>
-
+            
                     <div class="input-group input-group-sm mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
-                        <input type="password" name="password" class="form-control" placeholder="not required" minlength="4" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <input type="password" name="article_pw" class="form-control" placeholder="not required" minlength="4" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
-
+            
                     <div class="form-floating">
-                        <textarea class="form-control" name="content" style="height:60%;" required placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                        <textarea class="form-control" name="content" style="height: 250px;" required placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                         <label for="floatingTextarea2">Content</label>
                     </div>
                     <div class="input-group mb-3">

@@ -278,12 +278,12 @@
                         <tbody>
                             <% posts.forEach((post) => { %>
                             <tr>
-                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.idx %></a></td>
-                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.title %></a></td>
-                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.email %></a></td>
-                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.formattedDate %></a></td>
-                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.hit %></a></td>
-                                <td><a href="/board/read?idx=<%= post.idx %>"><%= post.likes %></a></td>
+                                <td><a href="/main_board/read?idx=<%= post.idx %>"><%= post.idx %></a></td>
+                                <td><a href="/main_board/read?idx=<%= post.idx %>"><%= post.title %></a></td>
+                                <td><a href="/main_board/read?idx=<%= post.idx %>"><%= post.email %></a></td>
+                                <td><a href="/main_board/read?idx=<%= post.idx %>"><%= post.formattedDate %></a></td>
+                                <td><a href="/main_board/read?idx=<%= post.idx %>"><%= post.hit %></a></td>
+                                <td><a href="/main_board/read?idx=<%= post.idx %>"><%= post.likes %></a></td>
                             </tr>
                             <% }) %>
                         </tbody>

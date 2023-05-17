@@ -303,39 +303,29 @@
 
             <div class="container">
                 <br>
-                <?php
-          if(isset($_GET[idx])){
-            $idx = $_GET[idx];
-          }
-          $query = "SELECT * FROM article WHERE idx = '$idx'";
-          $result = mysqli_query($conn, $query) or die("can't");
-          $row = mysqli_fetch_assoc($result);
-          $email = $row['email'];
-          $title = $row['title'];
-          $content = $row['content'];
-          $date = explode("-",$row['date']);
-          $file = $row['file'];
-  
-          $date[1] = date("F", mktime(0, 0, 0, $date[1], 10));
-  
-          echo '<div class="post">';
-          echo '<div class="post-header">';
-          echo '<img src="../image/logo.png" alt="Profile Picture">';
-          echo '<h2>' . $row["title"] . '</h2>';
-          echo '</div>';
-          echo "<p class='blog-post-meta' style='text-align:left;'>$date[1] $date[2]".", $date[0] by $email";
-          echo '<a style="float: right;">' . $row["hit"]. '</a>';
-          echo '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="display:inline-block; float: right; margin-top:1%;">';
-          echo '<path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path>';
-          echo '<path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>';
-          echo '</svg></p>';
-  
-          echo '<hr><div class="post-body">';
-          #echo '<img src="' . $row["file"] . '" alt="Post Image">';
-          echo '<p style="text-align:left;">' . $row["content"] . '</p>';
-          echo "<p style='text-align:right;'><a style='text-align:right;' href='$file' download>Download File</a></p><hr>";
-  
-  
+                <div class="post">
+                  <div class="post-header">
+                    <img src="../image/logo.png" alt="Profile Picture">
+                    <h2><%- row.title %></h2>
+                  </div>
+                  <p class="blog-post-meta" style="text-align:left;">
+                    <%= date %> by <%= email %>
+                    <a style="float: right;"><%- row.hit %></a>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="display:inline-block; float: right; margin-top:1%;">
+                      <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path>
+                      <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
+                    </svg>
+                  </p>
+                  <hr>
+                  <div class="post-body">
+                    <p style="text-align:left;"><%- row.content %></p>
+                    <p style="text-align:right;"><a style="text-align:right;" href="<%= row.file %>" download>Download File</a></p>
+                  </div>
+                  <hr>
+                </div>
+              </div>
+              
+
           #recommend
           echo '<div class="input-group mb-3" style="display:inline-block;">';
           echo "<form action='recommend.php' style='margin:0%; width:15%; float:left; display:inline-block;' method='POST'>";

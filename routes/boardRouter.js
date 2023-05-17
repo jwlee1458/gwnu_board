@@ -41,7 +41,28 @@ router.get('/test_board', (req, res) => {
 
 // read
 router.get('/read', (req, res) => {
-    res.render('boards/read', {posts: posts});
+  const idx = req.query.idx;
+  const query = "SELECT * FROM article WHERE idx = ?";
+  connection.query(query, [idx], (err, results) => {
+    if (err) {
+      console.error('쿼리 오류:', err);
+      return res.status(500).send('서버 오류');
+    }
+
+    if (results.length === 0) {
+      return res.status(404).send('게시물을 찾을 수 없습니다');
+    }
+
+    const row = results[0];
+    const email = row.email;
+    const title = row.title;
+    const content = row.content;
+    const file = row.file;
+    const date = new Date(row.date);
+    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const formattedDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+    res.render('boards/read', { row: row, email: email, title: title, content: content, date: formattedDate, file: file });
+  });
 });
 
 // modify

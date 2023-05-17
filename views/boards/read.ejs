@@ -108,11 +108,8 @@
         }
 
         .post {
-            width: 500px;
-            border: 1px solid lightgray;
-            border-radius: 10px;
-            margin: 20px auto;
-            padding: 20px;
+            border: none;
+            border-radius: 0;
         }
 
         .post-header {
@@ -278,10 +275,7 @@
                     <p style="text-align:left;"><%- post.content %></p>
                     <p style="text-align:right;"><a style="text-align:right;" href="<%= post.file %>" download>Download File</a></p>
                   </div>
-                  <hr>
-                </div>
-              </div>
-              
+                  <hr>              
 
           #recommend
           echo '<div class="input-group mb-3" style="display:inline-block;">';
@@ -318,8 +312,7 @@
                             <button class="btn btn-outline-secondary" type="submit">Post</button></div>
                     </div>
                 </form>
-            </div>
-        </div>
+
         <div class="post-footer">
         </div>
     </div>

@@ -8,7 +8,7 @@ const path = require('path');
 const ejs = require('ejs');
 const connection = require('./db/connection');
 
-const HTTP_PORT = 8080;
+const HTTP_PORT = 18080;
 
 const boardRouter = require('./routes/boardRouter');
 

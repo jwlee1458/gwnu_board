@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GWNU Library</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="/static/js/register_book_validation.js" defer></script>
+</head>
+<body>
+    <h1>GWNU Library</h1>
+
+    <form action="/library/register-book" method="post"
+        onsubmit="return validateBookRegisteration()">
+        <div>
+            <label for="id">등록번호</label>
+            <input type="text" name="id" id="id">
+        </div>
+        <div>
+            <label for="place">위치</label>
+            <input type="text" name="place" id="place">
+        </div>
+        <div>
+            <label for="isbn">ISBN</label>
+            <input type="text" name="isbn" id="isbn">
+        </div>
+        <div>
+            <label for="title">제목</label>
+            <input type="text" name="title" id="title">
+        </div>
+        <div>
+            <label for="author">저자</label>
+            <input type="text" name="author" id="author">
+        </div>
+        <div>
+            <label for="publisher">출판사</label>
+            <input type="text" name="publisher" id="publisher">
+        </div>
+        <div>
+            <label for="price">가격</label>
+            <input type="text" name="price" id="price">
+        <div>
+        <div><button type="submit">등록</button></div>
+    </form>
+</body>
+</html>
+

@@ -1,33 +1,29 @@
-require('dotenv').config();
+const express = require('express')
+const path = require('path')
+const favicon = require('serve-favicon')
+const libraryRouter = require('./routers/library')
 
-const express = require('express');
-const app = express();
-const router = express.Router();
-const http = require('http');
-const path = require('path');
-const ejs = require('ejs');
-const connection = require('./db/connection');
+const app = express()
+app.use('/static', express.static('public'))
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+app.use(express.urlencoded({extended: false}))
 
-const HTTP_PORT = 18080;
+app.set('view engine', 'hbs')
 
-const boardRouter = require('./routes/boardRouter');
+app.use('/library', libraryRouter)
 
-let options = {
-    extensions: ['ejs'],
-}
+app.get('/', (req, res) => {
+    res.render('index')
+})
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.set('view engine', 'ejs');
-app.set('views', './views');
-app.use('/static', express.static('static'));
+app.use((req, res, next) => {
+    console.log(req.url)
+    res.status(404).render('404', {
+        url: req.url
+    })
+})
 
-app.get('/', function(req, res) {
-    res.render('index');
-});
+app.listen(3000)
 
-app.use('/main_board', boardRouter);
 
-// HTTP
-http.createServer(app).listen(HTTP_PORT, () => {
-    console.log(`HTTP 서버가 ${HTTP_PORT} 포트에서 실행 중입니다.`);
-});
+

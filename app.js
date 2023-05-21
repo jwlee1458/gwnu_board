@@ -2,6 +2,9 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const multer = require('multer');
+const upload = multer();
 const router = express.Router();
 const http = require('http');
 const path = require('path');
@@ -11,6 +14,9 @@ const connection = require('./db/connection');
 const HTTP_PORT = 8080;
 
 const boardRouter = require('./routes/boardRouter');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(upload.none());
 
 let options = {
     extensions: ['ejs'],

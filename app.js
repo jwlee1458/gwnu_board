@@ -15,15 +15,20 @@ const HTTP_PORT = 8080;
 
 const boardRouter = require('./routes/boardRouter');
 
+const hbs = require('hbs');
+hbs.registerHelper('ifEqual', function(arg1, arg2, options) {
+  return (arg1 === arg2) ? options.fn(this) : options.inverse(this);
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.none());
 
 let options = {
-    extensions: ['ejs'],
+    extensions: ['hbs'],
 }
 
 app.use(express.static(path.join(__dirname, 'public')));
-app.set('view engine', 'ejs');
+app.set('view engine', 'hbs');
 app.set('views', './views');
 app.use('/static', express.static('static'));
 

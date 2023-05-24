@@ -31,7 +31,7 @@ function deletePost(postId, callback) {
 
 // search_result
 function searchPosts(category, search, callback) {
-  let query = "SELECT idx, title, email, DATE_FORMAT(date, '%Y-%m-%d') AS formattedDate, hit, likes FROM article";
+  let query = "SELECT idx, title, email, DATE_FORMAT(date, '%Y-%m-%d') AS formattedDate, hit, article_pw, likes FROM article";
   const conditions = [];
 
   if (category === 'all') {

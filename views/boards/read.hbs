@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>read</title>
+    <link href="../css/min.css" rel="stylesheet">
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        .b-example-divider {
+            height: 3rem;
+            background-color: rgba(0, 0, 0, .1);
+            border: solid rgba(0, 0, 0, .15);
+            border-width: 1px 0;
+            box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+        }
+
+        .b-example-vr {
+            flex-shrink: 0;
+            width: 1.5rem;
+            height: 100vh;
+        }
+
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .form-control-dark {
+            border-color: var(--bs-gray);
+        }
+
+        .form-control-dark:focus {
+            border-color: #fff;
+            box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);
+        }
+
+        .text-small {
+            font-size: 85%;
+        }
+
+        .dropdown-toggle {
+            outline: 0;
+        }
+
+        .container {
+            margin: 0 auto;
+            width: 50%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 36px;
+        }
+
+        form {
+            margin-top: 50px;
+        }
+
+        input[type="text"],
+        textarea {
+            padding: 10px;
+            font-size: 18px;
+            width: 100%;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .post {
+            border: none;
+            border-radius: 0;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .post-header h2 {
+            margin: 0;
+        }
+
+        .post-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .post-body {
+            text-align: center;
+        }
+
+        .post-body img {
+            width: 100%;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .post-footer p {
+            margin: 0;
+        }
+    </style>
+    <link href="dashboard.css" rel="stylesheet">
+    <style type="text/css">
+        /* Chart.js */
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: .99
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            animation: chartjs-render-animation 1ms
+        }
+
+        .chartjs-size-monitor,
+        .chartjs-size-monitor-expand,
+        .chartjs-size-monitor-shrink {
+            position: absolute;
+            direction: ltr;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow: hidden;
+            pointer-events: none;
+            visibility: hidden;
+            z-index: -1
+        }
+
+        .chartjs-size-monitor-expand>div {
+            position: absolute;
+            width: 1000000px;
+            height: 1000000px;
+            left: 0;
+            top: 0
+        }
+
+        .chartjs-size-monitor-shrink>div {
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            left: 0;
+            top: 0
+        }
+    </style>
+
+</head>
+
+<body class="vsc-initialized">
+
+    <nav class="navbar navbar-expand-xl navbar-dark bg-dark" aria-label="Sixth navbar example">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/main_board">GWNU Board</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample06" aria-controls="navbarsExample06" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarsExample06">
+                <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/main_board">Home</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="dropdown text-end" style="margin-right:6%">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="../images/logo.png" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small">
+                    <li><a class="dropdown-item" href="../user/Profile.php">Profile</a></li>
+                    <!--내가 쓴 글-->
+                    <li><a class="dropdown-item" href="../user/Settings.php">Settings</a></li>
+                    <!--개인정보 수정-->
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="../user/sign_out.php">Sign out</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="position-sticky pt-3 sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/main_board">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home align-text-bottom" aria-hidden="true">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                                </svg>
+                                Main Board
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </nav>
+
+
+
+            <div class="container">
+                <br>
+                <div class="post">
+                    <div class="post-header">
+                    <img src="../images/logo.png" alt="Profile Picture">
+                    <h2>{{post.title}}</h2>
+                    </div>
+                    <p class="blog-post-meta" style="text-align:left;">
+                    {{date}} by {{email}}
+                    <a style="float: right;">{{post.hit}}</a>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="display:inline-block; float: right; margin-top:1%;">
+                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"></path>
+                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"></path>
+                    </svg>
+                    </p>
+                    <hr>
+                    <div class="post-body">
+                    <p style="text-align:left;">{{post.content}}</p>
+                    <p style="text-align:right;"><a style="text-align:right;" href="{{post.file}}" download>Download File</a></p>
+                    </div>
+                    <hr>
+
+          #recommend
+          echo '<div class="input-group mb-3" style="display:inline-block;">';
+          echo "<form action='recommend.php' style='margin:0%; width:15%; float:left; display:inline-block;' method='POST'>";
+          echo "<input type='hidden' name='recommend_idx' value='" . $idx . "'>";
+          echo "<button type='submit' class='btn btn-outline-danger' style='display:inline-block;'>";
+          echo '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">';
+          echo '<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"></path></svg> ';
+          echo $row["likes"].'</button>';
+          echo "</form>";
+  
+          #hits section
+          $ip = $_SERVER['REMOTE_ADDR'];
+          $time = time();
+          $check_query = "SELECT * FROM views WHERE post_id = '$idx' AND ip = '$ip' AND watch_time > '$time' - 3600";
+          $result = mysqli_query($conn, $check_query);
+  
+          if(mysqli_num_rows($result) == 0) {
+            // If the user has not viewed this post in the last hour, increase the view count
+            $update_query = "UPDATE article SET hit = hit + 1 WHERE idx = '$idx'";
+            mysqli_query($conn, $update_query);
+        
+            // Add a record to the views table to track this user's view
+            $insert_query = "INSERT INTO views (ip, watch_time, post_id) VALUES ('$ip', '$time', '$idx')";
+            mysqli_query($conn, $insert_query);
+          }
+        ?>
+                <!--comment-->
+                <form action="add_comment.php" style="margin:0%; float:left; width:85%; display:inline-block;" method="POST">
+                    <div class="input-group mb-3">
+                        <input type="textarea" class="form-control" name="comment" placeholder="Write coment" aria-describedby="basic-addon2">
+                        <input type='hidden' name='idx' value="<?php echo $idx; ?>">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="submit">Post</button></div>
+                    </div>
+                </form>
+
+        <div class="post-footer">
+        </div>
+    </div>
+    <hr>
+
+    {{#ifEqual email 'test@test.com'}}
+        <div style="text-align: right;">
+            <a href="/main_board/modify?idx={{idx}}" class="btn btn-primary btn-lg active" role="button" style="font-size: 15px;" aria-pressed="true">Modify</a>
+            <a href="/main_board/delete?idx={{idx}}" class="btn btn-secondary btn-lg active" role="button" style="font-size: 15px;" aria-pressed="true">Delete</a>
+            <br><br><br>
+        </div>
+    {{/ifEqual}}
+
+    <!-- The comments section -->
+    <div class="comments">
+        <h3 style="text-align:left;">Comments</h3><br>
+
+        <?php
+            $comments_sql = "SELECT * FROM comments WHERE post_id = $idx ORDER BY comment_idx DESC";
+            $comments_result = mysqli_query($conn, $comments_sql);
+  
+            while($comment = mysqli_fetch_assoc($comments_result)){
+              echo "<tr>";
+              echo "<p style='text-align:left;'><b>$comment[email]</b>&nbsp";
+              echo "$comment[comment]</p>";
+              echo "<p style='text-align:left; font-size:10px;'>$comment[date]</p>";
+              echo "</tr>";
+            }
+            ?>
+
+
+    </div>
+
+    <script src="../bootstrap.bundle.min.js"></script>
+    </div>
+</body>
+</html>

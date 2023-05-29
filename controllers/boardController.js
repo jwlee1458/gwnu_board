@@ -1,3 +1,4 @@
+const express = require('express');
 const boardModel = require('../models/boardModel');
 
 // main_board
@@ -38,28 +39,123 @@ function createPost(req, res) {
 }
 
 // read
-function getReadPost(req, res) {
+// function getReadPost(req, res) {
+//   const postId = req.query.idx;
+//   boardModel.getPostById(postId, (err, results) => {
+//     if (err) {
+//       console.error('쿼리 오류:', err);
+//       return res.status(500).send('서버 오류');
+//     }
+
+//     if (results.length === 0) {
+//       return res.status(404).send('게시물을 찾을 수 없습니다');
+//     }
+
+//     const row = results[0];
+//     const email = row.email;
+//     const title = row.title;
+//     const content = row.content;
+//     const file = row.file;
+//     const date = new Date(row.date);
+//     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+//     const formattedDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
+//     //res.render('boards/read', { idx: postId, post: row, email: email, title: title, content: content, date: formattedDate, file: file });
+//   });
+  
+// };
+
+// comment
+function addComment(req, res) {
+  const postId = req.body.idx;
+  const comment = req.body.comment;
+  const email = 'test@test.com';
+  const currentDate = new Date().toISOString().split('T')[0];
+  boardModel.addComment(comment, postId, email, currentDate, (err, results) => {
+    if (err) {
+      console.error('DB 삽입 오류:', err);
+      res.status(500).send('DB 삽입 오류');
+    } else {
+      console.log('DB 삽입 성공');
+      const popupMessage = '댓글이 성공적으로 작성되었습니다!';
+      res.send(`
+        <script>
+          alert("${popupMessage}");
+          window.location.href = "/main_board";
+        </script>
+      `);
+    }
+  });
+}
+
+// function readComment(req, res) {
+//   const postId = req.query.idx;
+//   boardModel.readComment(postId, (err, results) => {
+//     if (err) {
+//       console.error('쿼리 오류:', err);
+//       return res.status(500).send('서버 오류');
+//     }
+
+//     // const row = results[0];
+//     // const comment = row.comment;
+//     // const email = row.email;
+//     // const date = new Date(row.date);
+
+//     const comment_row = results[0];
+//     const comment = comment_row.comment;
+//     const comment_email = comment_row.email;
+//     const comment_date = new Date(comment_row.date);
+//     console.log(comment_row, comment, comment_email, comment_date);
+//     //res.render('boards/read', { idx: postId, postcomment: comment_row, comment : comment, comment_email: email, comment_date: date });
+// })
+// }
+
+// read 페이지 불러오기
+function readForm(req, res) {
   const postId = req.query.idx;
-  boardModel.getPostById(postId, (err, results) => {
+  boardModel.readForm(postId, (err, results) => {
     if (err) {
       console.error('쿼리 오류:', err);
       return res.status(500).send('서버 오류');
     }
-
     if (results.length === 0) {
       return res.status(404).send('게시물을 찾을 수 없습니다');
     }
+    // post(게시글) data
+    const postResults = results.map(row => {
+      const email = row.email;
+      const title = row.title;
+      const content = row.content;
+      const file = row.file;
+      const date = new Date(row.date);
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const formattedDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
 
-    const row = results[0];
-    const email = row.email;
-    const title = row.title;
-    const content = row.content;
-    const file = row.file;
-    const date = new Date(row.date);
-    const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    const formattedDate = monthNames[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
-    res.render('boards/read', { idx: postId, post: row, email: email, title: title, content: content, date: formattedDate, file: file });
-  });
+      return {
+        idx: postId,
+        email: email,
+        title: title,
+        content: content,
+        date: formattedDate,
+        file: file
+      }
+    });
+    // comment(댓글) data
+    const commentResults = results.map(row => {
+      const comment = row.comment;
+      const comment_email = row.comment_email;
+      const comment_date = new Date(row.comment_date);
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      const formattedCommentDate = monthNames[comment_date.getMonth()] + " " + comment_date.getDate() + ", " + comment_date.getFullYear();
+
+      return {
+        comment: comment,
+        comment_email: comment_email,
+        comment_date: formattedCommentDate
+      }
+   });
+
+    res.render('boards/read', { post: postResults, comment : commentResults});
+  })
 }
 
 // modify
@@ -144,7 +240,10 @@ module.exports = {
   getMainBoard,
   getWriteForm,
   createPost,
-  getReadPost,
+  // getReadPost,
+  addComment,
+  // readComment,
+  readForm,
   getModifyForm,
   updatePost,
   deletePost,

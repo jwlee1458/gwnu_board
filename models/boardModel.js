@@ -17,6 +17,33 @@ function getPostById(postId, callback) {
   connection.query(query, [postId], callback);
 }
 
+// comment
+function addComment(comment, postId, email, currentDate, callback) {
+  const query = `INSERT INTO comments(comment, post_id, comment_email, comment_date) VALUES (?, ?, ?, ?)`;
+  connection.query(query, [comment, postId, email, currentDate], callback);
+}
+
+// function readComment(postId, callback) {
+//   const query = "SELECT * FROM comments WHERE post_id = ? ORDER BY comment_idx DESC";
+//   connection.query(query, [postId], callback);
+// }
+
+function readForm(postId, callback) {
+  const query = `SELECT * FROM article JOIN comments ON article.idx = comments.post_id WHERE article.idx = ? ORDER BY comments.comment_idx DESC`;
+  connection.query(query, [postId], (error, results)  => {
+    if (error) {
+      console.error(error);
+      if (callback) {
+        callback(error, null);
+      }
+    } else {
+      if (callback) {
+        callback(null, results);
+      }
+    }
+  })
+}
+
 // modify
 function updatePost(values, callback) {
   const query = 'UPDATE article SET title = ?, board = ?, article_pw = ?, content = ?, file = ? WHERE idx = ?';
@@ -59,6 +86,9 @@ module.exports = {
   getMainBoard,
   createPost,
   getPostById,
+  addComment,
+  // readComment,
+  readForm,
   updatePost,
   deletePost,
   searchPosts

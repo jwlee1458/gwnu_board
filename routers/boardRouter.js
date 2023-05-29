@@ -7,7 +7,10 @@ router.get('/', boardController.getMainBoard);
 router.get('/write', boardController.getWriteForm);
 router.post('/write', boardController.createPost);
 
-router.get('/read', boardController.getReadPost);
+//router.get('/read', boardController.getReadPost);
+//router.get('/read', boardController.readComment);
+router.get('/read', boardController.readForm);
+router.post('/read', boardController.addComment);
 
 router.get('/modify', boardController.getModifyForm);
 router.post('/modify', boardController.updatePost);

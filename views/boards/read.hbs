@@ -255,22 +255,28 @@
 
 
 
-            <div class="container">
+        <div class="container">
                 <br>
+                {{#each post}}
+                {{#if @first}}
                 <div class="post">
                     <div class="post-header">
                     <img src="../images/logo.png" alt="Profile Picture">
-                    <h2>{{post.title}}</h2>
+                    <h2>{{title}}</h2>
                     </div>
                     <p class="blog-post-meta" style="text-align:left;">
                     {{date}} by {{email}}
                     </p>
                     <hr>
                     <div class="post-body">
-                    <p style="text-align:left;">{{post.content}}{{post.article_pw}}</p>
-                    <p style="text-align:right;"><a style="text-align:right;" href="{{post.file}}" download>Download File</a></p>
+                    <p style="text-align:left;">{{content}}{{article_pw}}</p>
+                    <p style="text-align:right;"><a style="text-align:right;" href="{{file}}" download>Download File</a></p>
                     </div>
                     <hr>
+
+                {{/if}}
+                {{/each}}
+
 
           #recommend
           echo '<div class="input-group mb-3" style="display:inline-block;">';
@@ -286,15 +292,19 @@
 
           
         ?>
-                <!--comment-->
-                <form action="add_comment.php" style="margin:0%; float:left; width:85%; display:inline-block;" method="POST">
-                    <div class="input-group mb-3">
-                        <input type="textarea" class="form-control" name="comment" placeholder="Write coment" aria-describedby="basic-addon2">
-                        <input type='hidden' name='idx' value="<?php echo $idx; ?>">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit">Post</button></div>
-                    </div>
-                </form>
+         <!-- 댓글 작성 -->
+          
+          <form action="/main_board/read?=idx" style="margin:0%; float:left; width:85%; display:inline-block;" method="POST" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+                <input type="textarea" class="form-control" name="comment" placeholder="Write comment" aria-describedby="basic-addon2">
+                {{#each post}}{{#if @first}}
+                <input type="hidden" name="idx" value="{{idx}}">
+                {{/if}}{{/each}}
+                <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit">Post</button>
+                </div>
+            </div>
+            </form>
 
         <div class="post-footer">
         </div>
@@ -344,28 +354,16 @@
     };
 </script>
 
-
-
-
-    <!-- The comments section -->
-    <div class="comments">
-        <h3 style="text-align:left;">Comments</h3><br>
-
-        <?php
-            $comments_sql = "SELECT * FROM comments WHERE post_id = $idx ORDER BY comment_idx DESC";
-            $comments_result = mysqli_query($conn, $comments_sql);
-  
-            while($comment = mysqli_fetch_assoc($comments_result)){
-              echo "<tr>";
-              echo "<p style='text-align:left;'><b>$comment[email]</b>&nbsp";
-              echo "$comment[comment]</p>";
-              echo "<p style='text-align:left; font-size:10px;'>$comment[date]</p>";
-              echo "</tr>";
-            }
-            ?>
-
-
-    </div>
+         <!-- 작성된 댓글 목록 -->
+        <div class="comments">
+            <h3 style="text-align:left;">Comments</h3><br>
+            {{#each comment}}
+                <tr>
+                    <p style="text-align:left;"><b>{{comment_email}}</b>&nbsp;{{comment}}</p>
+                    <p style="text-align:left; font-size:10px;">{{comment_date}}</p>
+                </tr>
+            {{/each}}
+        </div>
 
     <script src="../bootstrap.bundle.min.js"></script>
     </div>
